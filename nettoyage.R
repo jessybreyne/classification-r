@@ -1,9 +1,10 @@
 ######### Nettoyage 
 
 splash=function(x){
-    res=NULL
-    for (i in x) res=paste(res, i)
-    res
+    # res=NULL
+    # for (i in x) res=paste(res, i)
+    # res
+    paste(x, collapse = " ")
 }
 
 #Suppression des script s(<script .... </script>)
@@ -25,14 +26,13 @@ removeBalises=function(x){
 }
 
 #nettoyage du corpus, selon les "notes-preparaton" sur Celene
-nettoyage<-function(corpus){
-    corpus<-tm_map(corpus,content_transformer(tolower))
-	corpus<-tm_map(corpus,content_transformer(splash))
-    corpus<-tm_map(corpus,content_transformer(removeScript))
-	corpus<-tm_map(corpus,content_transformer(removeBalises))
-    corpus<-tm_map(corpus,removeWords,words=stopwords('en'))
-    corpus<-tm_map(corpus,removePunctuation)
-    corpus<-tm_map(corpus,removeNumbers)
-    corpus<-tm_map(corpus,stemDocument)
+nettoyage = function(corpus) {
+  corpus = tm_map(corpus, content_transformer(tolower))
+  corpus = tm_map(corpus, content_transformer(splash))
+  corpus = tm_map(corpus, content_transformer(removeScript))
+  corpus = tm_map(corpus, content_transformer(removeBalises))
+  corpus = tm_map(corpus, removeNumbers)
+  corpus = tm_map(corpus, removeWords, words=stopwords("en"))
+  corpus = tm_map(corpus, stemDocument)
+  corpus = tm_map(corpus, removePunctuation, ucp=TRUE)
 }
-

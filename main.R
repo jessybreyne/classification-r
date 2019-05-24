@@ -1,6 +1,6 @@
 # Chargement du modèle et des sources
 vocab <- readRDS("vocab.rds")
-mat <- readRDS("Mstr.rds")
+model <- readRDS("Mstr.rds")
 source("fonctions-kppv.R", encoding = "UTF-8")
 source("nettoyage.R",encoding = "UTF-8")
 
@@ -9,7 +9,7 @@ library(nnet)
 
 ######### Classification
 
-classer <- function(fic) {
+classerAncien <- function(fic) {
   #prepare fic for classification
   newText <- VCorpus(URISource(fic))
   newTextN <- nettoyage(newText)
@@ -22,16 +22,32 @@ classer <- function(fic) {
   # return(classerKPPV(newM[1,], 1, newM))
 }
 
-nomsCategorieId <-c(1,2,3,4,5,6,7)
-nomsCategorie <-c("accueil","blog","commerce","FAQ","home","liste","recherche")
+classer = function(fichier) {
 
-mat <- classer("training2016/accueil/front_page01_02_02_iht.htm")
-sparse <- removeSparseTerms(mat, 0.80)
-findFreqTerms(mat,5)
-fm <- sapply(c(1:50), function(i){length(findFreqTerms(mat,i))})
-plot(fm,type='l')
+  ds <- URISource(fichier, encoding = "UTF-8", mode = "text")
 
-asmat <- as.matrix(mat)
-nn <-nnet(x=asmat[1:100],y=c(rep(0,50),rep(1,50)),size=5,skip=TRUE)
+  corpus <- VCorpus(ds, readerControl = list(reader = reader(ds), language="en"))
 
-predict(nn)
+  cleaned_corpus = nettoyage(corpus)
+  dtm = DocumentTermMatrix(cleaned_corpus,list(dictionary=vocab))
+  matNew <- as.matrix(dtm)
+
+  as.character(predict(model,matNew))
+
+    # table(predict(model,matNew))
+
+}
+
+# nomsCategorieId <-c(1,2,3,4,5,6,7)
+# nomsCategorie <-c("accueil","blog","commerce","FAQ","home","liste","recherche")
+
+# mat <- classer("training2016/accueil/front_page01_02_02_iht.htm")
+# sparse <- removeSparseTerms(mat, 0.80)
+# findFreqTerms(mat,5)
+# fm <- sapply(c(1:50), function(i){length(findFreqTerms(mat,i))})
+# plot(fm,type='l')
+
+# asmat <- as.matrix(mat)
+# nn <-nnet(x=asmat[1:100],y=c(rep(0,50),rep(1,50)),size=5,skip=TRUE)
+
+# predict(nn)

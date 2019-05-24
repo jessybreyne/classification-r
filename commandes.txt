@@ -1,7 +1,7 @@
 source("main.R")
 classer("training2016/accueil/front_page01_02_02_iht.htm")
 
-
+install.packages("packages/e1071_1.7-1.tar.gz")
 install.packages("packages/Rcpp_1.0.1.tar.gz")
 install.packages("packages/xml2_1.2.0.tar.gz")
 install.packages("packages/slam_0.1-45.tar.gz")
