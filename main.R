@@ -22,8 +22,8 @@ classer <- function(fic) {
   # return(classerKPPV(newM[1,], 1, newM))
 }
 
-
-noms <-c("accueil","blog","commerce","FAQ","home","liste","recherche")
+nomsCategorieId <-c(1,2,3,4,5,6,7)
+nomsCategorie <-c("accueil","blog","commerce","FAQ","home","liste","recherche")
 
 mat <- classer("training2016/accueil/front_page01_02_02_iht.htm")
 sparse <- removeSparseTerms(mat, 0.80)
