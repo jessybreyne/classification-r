@@ -5,6 +5,7 @@ source("fonctions-kppv.R", encoding = "UTF-8")
 source("nettoyage.R",encoding = "UTF-8")
 
 library(tm)
+library(nnet)
 
 ######### Classification
 
@@ -30,3 +31,7 @@ findFreqTerms(mat,5)
 fm <- sapply(c(1:50), function(i){length(findFreqTerms(mat,i))})
 plot(fm,type='l')
 
+asmat <- as.matrix(mat)
+nn <-nnet(x=asmat[1:100],y=c(rep(0,50),rep(1,50)),size=5,skip=TRUE)
+
+predict(nn)
