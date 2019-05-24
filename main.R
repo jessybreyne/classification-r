@@ -13,11 +13,12 @@ classer <- function(fic) {
   newText <- VCorpus(URISource(fic))
   newTextN <- nettoyage(newText)
   newLineForTextN <- DocumentTermMatrix(newTextN,list(dictionary=vocab)) 
-  newLineForTextN;
+  # newTextN[[1]]$content
+  return(inspect(newLineForTextN));
   #add the new text as the first line to the matrix, also add the last element as the class (value does not matter)
-  newM <- rbind(c(as.vector(newLineForTextN),"3"),mat)
+  # newM <- rbind(c(as.vector(newLineForTextN),"3"),mat)
   #on retourne la classe du plus proche voisin de la matrice
-  return(classerKPPV(newM[1,], 1, newM))
+  # return(classerKPPV(newM[1,], 1, newM))
 }
 
 
