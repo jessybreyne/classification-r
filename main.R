@@ -14,11 +14,17 @@ classer <- function(fic) {
   newTextN <- nettoyage(newText)
   newLineForTextN <- DocumentTermMatrix(newTextN,list(dictionary=vocab)) 
   # newTextN[[1]]$content
-  return(inspect(newLineForTextN));
+  return(newLineForTextN);
   #add the new text as the first line to the matrix, also add the last element as the class (value does not matter)
   # newM <- rbind(c(as.vector(newLineForTextN),"3"),mat)
   #on retourne la classe du plus proche voisin de la matrice
   # return(classerKPPV(newM[1,], 1, newM))
 }
 
+
+mat <- classer("training2016/accueil/front_page01_02_02_iht.htm")
+sparse <- removeSparseTerms(mat, 0.80)
+findFreqTerms(mat,5)
+fm <- sapply(c(1:50), function(i){length(findFreqTerms(mat,i))})
+plot(fm,type='l')
 
