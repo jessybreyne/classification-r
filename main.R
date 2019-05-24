@@ -22,6 +22,8 @@ classer <- function(fic) {
 }
 
 
+noms <-c("accueil","blog","commerce","FAQ","home","liste","recherche")
+
 mat <- classer("training2016/accueil/front_page01_02_02_iht.htm")
 sparse <- removeSparseTerms(mat, 0.80)
 findFreqTerms(mat,5)
