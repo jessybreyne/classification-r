@@ -27,9 +27,9 @@ removeBalises=function(x){
 #nettoyage du corpus, selon les "notes-preparaton" sur Celene
 nettoyage<-function(corpus){
     corpus<-tm_map(corpus,content_transformer(tolower))
-		corpus<-tm_map(corpus,content_transformer(splash))
+	corpus<-tm_map(corpus,content_transformer(splash))
     corpus<-tm_map(corpus,content_transformer(removeScript))
-		corpus<-tm_map(corpus,content_transformer(removeBalises))
+	corpus<-tm_map(corpus,content_transformer(removeBalises))
     corpus<-tm_map(corpus,removeWords,words=stopwords('en'))
     corpus<-tm_map(corpus,removePunctuation)
     corpus<-tm_map(corpus,removeNumbers)
