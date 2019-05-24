@@ -5,7 +5,7 @@ source("nettoyage.R")
 # Chargement et vectorisation
 ###############################################################
 
-data<-VCorpus(DirSource("../training2016",recursive=TRUE))
+data<-VCorpus(DirSource("training2016",recursive=TRUE))
 
 dataN<-nettoyage(data)
 
@@ -17,7 +17,7 @@ mat<-DocumentTermMatrix(dataN)
 #Weighting          : term frequency (tf)
 
 #nouvelle représentation avec seulement les mots qui apparaissent au moins 300 fois dans le corpus
-vocab<-findFreqTerms(mat,300)
+vocab<-findFreqTerms(mat,20)
 mat<-DocumentTermMatrix(dataN,list(dictionary=vocab))
 
 #préparation de la matrice R pour la classification, 7 clases * 150 docs chacun
