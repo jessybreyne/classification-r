@@ -1,53 +1,21 @@
 # Chargement du modèle et des sources
 vocab <- readRDS("vocab.rds")
 model <- readRDS("Mstr.rds")
-source("fonctions-kppv.R", encoding = "UTF-8")
 source("nettoyage.R",encoding = "UTF-8")
 
-library(tm)
-library(nnet)
+library("tm")
+library("e1071")
 
 ######### Classification
 
-classerAncien <- function(fic) {
-  #prepare fic for classification
-  newText <- VCorpus(URISource(fic))
-  newTextN <- nettoyage(newText)
-  newLineForTextN <- DocumentTermMatrix(newTextN,list(dictionary=vocab)) 
-  # newTextN[[1]]$content
-  return(newLineForTextN);
-  #add the new text as the first line to the matrix, also add the last element as the class (value does not matter)
-  # newM <- rbind(c(as.vector(newLineForTextN),"3"),mat)
-  #on retourne la classe du plus proche voisin de la matrice
-  # return(classerKPPV(newM[1,], 1, newM))
-}
-
 classer = function(fichier) {
-
-  ds <- URISource(fichier, encoding = "UTF-8", mode = "text")
-
-  corpus <- VCorpus(ds, readerControl = list(reader = reader(ds), language="en"))
-
-  cleaned_corpus = nettoyage(corpus)
-  dtm = DocumentTermMatrix(cleaned_corpus,list(dictionary=vocab))
-  matNew <- as.matrix(dtm)
-
-  as.character(predict(model,matNew))
-
-    # table(predict(model,matNew))
-
+  #prepare fichier for classification
+  dataImpure <- URISource(fichier, encoding = "UTF-8", mode = "text")
+  corpusImpure <- VCorpus(dataImpure, readerControl = list(reader = reader(dataImpure), language="en"))
+  corpusPure = nettoyage(corpusImpure)
+  matImpure = DocumentTermMatrix(corpusPure,list(dictionary=vocab))
+  #add the new text as the first line to the matrix, also add the last element as the class (value does not matter)
+  matPure <- as.matrix(matImpure)
+  #on retourne la prediction du SVM
+  as.character(predict(model,matPure))
 }
-
-# nomsCategorieId <-c(1,2,3,4,5,6,7)
-# nomsCategorie <-c("accueil","blog","commerce","FAQ","home","liste","recherche")
-
-# mat <- classer("training2016/accueil/front_page01_02_02_iht.htm")
-# sparse <- removeSparseTerms(mat, 0.80)
-# findFreqTerms(mat,5)
-# fm <- sapply(c(1:50), function(i){length(findFreqTerms(mat,i))})
-# plot(fm,type='l')
-
-# asmat <- as.matrix(mat)
-# nn <-nnet(x=asmat[1:100],y=c(rep(0,50),rep(1,50)),size=5,skip=TRUE)
-
-# predict(nn)
